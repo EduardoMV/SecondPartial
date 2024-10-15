@@ -7,7 +7,7 @@ interface Task {
   id: number;
   text: string;
   completed: boolean;
-  isEditing: boolean; // Add a flag for edit mode
+  isEditing: boolean;
 }
 
 const TaskManager = () => {

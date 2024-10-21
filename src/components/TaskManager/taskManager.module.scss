@@ -1,18 +1,18 @@
-$primary-color: #0070f3;
-$hover-color: #005bb5;
-$border-color: #ccc;
+$primary-color: #f0b1ff;
+$hover-color: #be95be;
+$border-color: #a3a3a3;
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
   min-height: 100vh;
 
   h1 {
     text-align: center;
-    color: white;
+    color: #181818;
     margin-bottom: 30px;
     font-size: 2.5rem;
   }
@@ -28,8 +28,8 @@ $border-color: #ccc;
       margin-right: 10px;
       border: 1px solid $border-color;
       border-radius: 6px;
-      background-color: #222;
-      color: white;
+      background-color: #e1e1e1;
+      color: black;
       font-size: 1rem;
       width: 300px;
     }
@@ -55,18 +55,26 @@ $border-color: #ccc;
     justify-content: center;
     margin-bottom: 30px;
 
-    button {
+    .button {
       padding: 10px 20px;
       margin: 5px;
-      border: none;
-      background-color: $primary-color;
-      color: white;
+      border: 1px solid #a3a3a3;
+      background-color:white;
+      color: #181818;
       cursor: pointer;
       border-radius: 6px;
       font-size: 1rem;
 
       &:hover {
-        background-color: $hover-color;
+        background-color: #181818;
+        color: white;
+        border: 1px solid #181818;
+      }
+
+      &:focus{
+        background-color: #181818;
+        color: white;
+        border: 1px solid #181818;
       }
     }
   }
@@ -84,11 +92,11 @@ $border-color: #ccc;
     justify-content: space-between;
     margin: 15px 0;
     padding: 15px;
-    background-color: #2a2a2a;
+    background-color: #ffffff;
     border: 1px solid $border-color;
     border-radius: 6px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    color: white;
+    color: #181818;
 
     span {
       flex: 1;
@@ -101,7 +109,7 @@ $border-color: #ccc;
       background: transparent;
       flex: 1;
       margin-right: 15px;
-      color: white;
+      color: #181818;
       font-size: 1.1rem;
     }
 
@@ -116,6 +124,51 @@ $border-color: #ccc;
 
       &:hover {
         background-color: $hover-color;
+      }
+    }
+
+    .button-edit {
+      padding: 10px 15px;
+      margin-left: 10px;
+      background-color: #9e9bfe;
+      color: white;
+      cursor: pointer;
+      border: 1px solid #9e9bfe;
+      border-radius: 6px;
+      font-size: 1rem;
+
+      &:hover {
+        background-color: #8f8bf4;
+      }
+    }
+
+    .button-complete {
+      padding: 10px 15px;
+      margin-left: 10px;
+      background-color: #5cd669;
+      color: white;
+      cursor: pointer;
+      border: 1px solid #5cd669;
+      border-radius: 6px;
+      font-size: 1rem;
+
+      &:hover {
+        background-color: #4dc059;
+      }
+    }
+
+    .button-delete {
+      padding: 10px 15px;
+      margin-left: 10px;
+      background-color: #ffb1b2;
+      color: white;
+      cursor: pointer;
+      border: 1px solid #ffb1b2;
+      border-radius: 6px;
+      font-size: 1rem;
+
+      &:hover {
+        background-color:#ec999a;
       }
     }
 

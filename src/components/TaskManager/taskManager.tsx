@@ -99,11 +99,11 @@ const TaskManager = () => {
             ) : (
               <>
                 <span>{task.text}</span>
-                <button onClick={() => enableEditing(task.id)} className={styles.button}>Edit</button>
-                <button onClick={() => toggleCompletion(task.id)} className={styles.button}>
+                <button onClick={() => enableEditing(task.id)} className={styles['button-edit']}>Edit</button>
+                <button onClick={() => toggleCompletion(task.id)} className={styles['button-complete']}>
                   {task.completed ? 'Mark as Pending' : 'Mark as Completed'}
                 </button>
-                <button onClick={() => deleteTask(task.id)} className={styles.button}>Delete</button>
+                <button onClick={() => deleteTask(task.id)} className={styles['button-delete']}>Delete</button>
               </>
             )}
           </li>

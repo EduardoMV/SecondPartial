@@ -7,7 +7,7 @@ interface Task {
   id: number;
   text: string;
   completed: boolean;
-  isEditing: boolean; // Add a flag for edit mode
+  isEditing: boolean;
 }
 
 const TaskManager = () => {
@@ -15,20 +15,23 @@ const TaskManager = () => {
   const [newTask, setNewTask] = useState<string>('');
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
 
-  // Function to add a new task
   const addTask = () => {
     if (newTask.trim()) {
       setTasks([...tasks, { id: Date.now(), text: newTask, completed: false, isEditing: false }]);
-      setNewTask(''); // Clear input field
+      setNewTask('');
     }
   };
 
-  // Function to enable editing for a task
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      addTask();
+    }
+  };
+
   const enableEditing = (id: number) => {
     setTasks(tasks.map(task => (task.id === id ? { ...task, isEditing: true } : task)));
   };
 
-  // Function to edit and save task
   const saveTask = (id: number, newText: string) => {
     const updatedTasks = tasks.map(task =>
       task.id === id ? { ...task, text: newText, isEditing: false } : task
@@ -36,18 +39,15 @@ const TaskManager = () => {
     setTasks(updatedTasks);
   };
 
-  // Function to cancel editing
   const cancelEditing = (id: number) => {
     setTasks(tasks.map(task => (task.id === id ? { ...task, isEditing: false } : task)));
   };
 
-  // Function to delete a task
   const deleteTask = (id: number) => {
     const updatedTasks = tasks.filter(task => task.id !== id);
     setTasks(updatedTasks);
   };
 
-  // Function to toggle task completion
   const toggleCompletion = (id: number) => {
     const updatedTasks = tasks.map(task =>
       task.id === id ? { ...task, completed: !task.completed } : task
@@ -55,7 +55,6 @@ const TaskManager = () => {
     setTasks(updatedTasks);
   };
 
-  // Filter tasks based on status
   const filteredTasks = tasks.filter(task => {
     if (filter === 'completed') return task.completed;
     if (filter === 'pending') return !task.completed;
@@ -71,6 +70,7 @@ const TaskManager = () => {
           placeholder="Enter a new task"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
+          onKeyDown={handleKeyDown}
           className={styles.input}
         />
         <button onClick={addTask} className={styles.button}>Add Task</button>

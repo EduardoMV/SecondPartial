@@ -41,7 +41,7 @@ const TaskManager = () => {
 
   // Obtener la lista seleccionada
   const selectedTaskList = taskLists.find(list => list.id === selectedListId);
-
+  
   // Función para agregar una nueva tarea a la lista seleccionada
   const addTask = () => {
     if (newTask.trim() && selectedListId !== null) {
@@ -155,6 +155,11 @@ const TaskManager = () => {
           placeholder="New List Name"
           value={newListName}
           onChange={(e) => setNewListName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              addTaskList();
+            }
+          }}
           className={styles.input}
         />
         <button onClick={addTaskList} className={styles.button}>Add List</button>
@@ -168,6 +173,11 @@ const TaskManager = () => {
             placeholder="Enter a new task"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                addTask();
+              }
+            }}
             className={styles.input}
           />
           <button onClick={addTask} className={styles.button}>Add Task</button>

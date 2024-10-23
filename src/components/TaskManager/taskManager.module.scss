@@ -1,32 +1,35 @@
 $primary-color: #f0b1ff;
 $hover-color: #be95be;
 $border-color: #a3a3a3;
+$background-color: #ffffff;
+$color-text: #181818;
+$sidebar-background-color: #f4f4f4;
 
 .container {
   display: flex;  // Cambiar a flex row
   flex-direction: row;  // Asegúrate de que sea horizontal
   align-items: flex-start; // Alinear al inicio
   padding: 20px;
-  background-color: #ffffff;
+  background-color: $background-color;
   min-height: 100vh;
 
   h1 {
     text-align: center;
-    color: #181818;
+    color: $color-text;
     margin-bottom: 30px;
     font-size: 2.5rem;
   }
 
   .sidebar {
     width: 250px;
+    height: 100dvh;
     padding: 20px;
-    background-color: #f4f4f4;
-    border-right: 1px solid $border-color;
+    background-color: $sidebar-background-color;
 
     h2 {
       font-size: 1.5rem;
       margin-bottom: 20px;
-      color: #181818;
+      color: $color-text;
     }
 
     ul {
@@ -310,4 +313,10 @@ $border-color: #a3a3a3;
     }
   }
 
+}
+
+@media (prefers-color-scheme: dark){
+  $background-color: #181818;
+  $color-text: #ffffff;
+  $sidebar-background-color: #242424;
 }

@@ -3,9 +3,9 @@ $hover-color: #be95be;
 $border-color: #a3a3a3;
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex;  // Cambiar a flex row
+  flex-direction: row;  // Asegúrate de que sea horizontal
+  align-items: flex-start; // Alinear al inicio
   padding: 20px;
   background-color: #ffffff;
   min-height: 100vh;
@@ -22,17 +22,17 @@ $border-color: #a3a3a3;
     padding: 20px;
     background-color: #f4f4f4;
     border-right: 1px solid $border-color;
-  
+
     h2 {
       font-size: 1.5rem;
       margin-bottom: 20px;
       color: #181818;
     }
-  
+
     ul {
       list-style: none;
       padding: 0;
-  
+
       li {
         padding: 10px;
         margin-bottom: 10px;
@@ -40,18 +40,18 @@ $border-color: #a3a3a3;
         border-radius: 6px;
         cursor: pointer;
         border: 1px solid $border-color;
-  
+
         &:hover {
           background-color: $hover-color;
         }
-  
+
         &.selectedList {
           background-color: $primary-color;
           color: white;
         }
       }
     }
-  
+
     .input {
       width: 100%;
       padding: 10px;
@@ -61,7 +61,7 @@ $border-color: #a3a3a3;
       background-color: #e1e1e1;
       color: black;
     }
-  
+
     .button {
       width: 100%;
       padding: 10px;
@@ -70,17 +70,84 @@ $border-color: #a3a3a3;
       color: white;
       border-radius: 6px;
       cursor: pointer;
-  
+
       &:hover {
         background-color: $hover-color;
       }
     }
   }
-  
+
   .taskManager {
-    flex: 1;
+    flex: 1;  // Esto asegura que ocupe el resto del espacio disponible
     padding: 20px;
+    display: flex; // Hacer que el contenedor use flexbox
+    flex-direction: column; // Alinear en columna
+    align-items: center; // Centrar horizontalmente
+    justify-content: flex-start; // Alinear al inicio verticalmente
+  
+    .taskInput {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+  
+      input[type="text"] {
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        background-color: #e1e1e1;
+        color: black;
+        font-size: 1rem;
+        width: 300px;
+      }
+  
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        border: none;
+        background-color: $primary-color;
+        color: white;
+        cursor: pointer;
+        border-radius: 6px;
+        font-size: 1rem;
+  
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
+    }
+  
+    // Ajustar la lista de tareas para que esté centrada
+    ul {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+      max-width: 600px; // O puedes cambiar esto si quieres una lista más ancha
+      margin: 0; // Asegúrate de que no haya margen adicional
+      display: flex;
+      flex-direction: column;
+      align-items: center; // Centrar cada tarea dentro de la lista
+  
+      li {
+        margin: 15px 0; // Espaciado entre las tareas
+        padding: 15px;
+        background-color: #ffffff;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        color: #181818;
+        width: 100%; // Asegurarte de que las tareas ocupen todo el ancho disponible
+  
+        span {
+          flex: 1;
+          margin-right: 15px;
+          font-size: 1.1rem;
+        }
+      }
+    }
   }
+  
 
   .taskInput {
     display: flex;

@@ -25,6 +25,19 @@
       color: var(--color-text);
     }
 
+    .button-delete-list {
+      background: none;
+      border: none;
+      color: red;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    .button-delete-list:hover {
+      color: darkred;
+    }
+    
+
     ul {
       list-style: none;
       padding: 0;

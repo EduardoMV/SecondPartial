@@ -10,7 +10,7 @@ interface Task {
   text: string;
   completed: boolean;
   isEditing: boolean;
-  dueDate: Date | null;
+  dueDate: Date | null; // Add dueDate field
 }
 
 interface TaskList {
@@ -29,6 +29,7 @@ const TaskManager = () => {
   const [editingText, setEditingText] = useState<string>("");
   const [editingDate, setEditingDate] = useState<Date | null>(null); // State for editing date
 
+  // Load task lists from localStorage on component mount
   useEffect(() => {
     const savedTaskLists = localStorage.getItem("taskLists");
     if (savedTaskLists) {
@@ -38,8 +39,9 @@ const TaskManager = () => {
         console.error("Failed to parse task lists from localStorage", error);
       }
     }
-  }, []);
+  }, []); // Runs only once when the component mounts
 
+  // Save task lists to localStorage whenever they change
   useEffect(() => {
     if (taskLists.length > 0) {
       localStorage.setItem("taskLists", JSON.stringify(taskLists));
@@ -74,7 +76,7 @@ const TaskManager = () => {
                     text: newTask,
                     completed: false,
                     isEditing: false,
-                    dueDate: newTaskDate,
+                    dueDate: newTaskDate, // Set the selected due date
                   },
                 ],
               }
@@ -82,35 +84,11 @@ const TaskManager = () => {
         )
       );
       setNewTask("");
-      setNewTaskDate(null);
+      setNewTaskDate(null); // Clear the date after adding the task
     }
   };
 
-  const filteredTasks =
-    selectedTaskList?.tasks
-      .filter((task) => {
-        if (filter === "completed") return task.completed;
-        if (filter === "pending") return !task.completed;
-        return true;
-      })
-      .sort((a, b) => {
-        if (a.dueDate && b.dueDate) {
-          return b.dueDate.getTime() - a.dueDate.getTime();
-        } else if (a.dueDate) {
-          return -1;
-        } else if (b.dueDate) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }) || [];
-
-  const enableEditing = (
-    listId: number,
-    taskId: number,
-    currentText: string,
-    currentDueDate: Date | null
-  ) => {
+  const enableEditing = (listId: number, taskId: number, currentText: string, currentDueDate: Date | null) => {
     setTaskLists(
       taskLists.map((list) =>
         list.id === listId
@@ -123,8 +101,8 @@ const TaskManager = () => {
           : list
       )
     );
-    setEditingText(currentText);
-    setEditingDate(currentDueDate);
+    setEditingText(currentText); // Set initial value for editing
+    setEditingDate(currentDueDate); // Set initial value for date editing
   };
 
   const saveTask = (listId: number, taskId: number) => {
@@ -135,20 +113,15 @@ const TaskManager = () => {
               ...list,
               tasks: list.tasks.map((task) =>
                 task.id === taskId
-                  ? {
-                      ...task,
-                      text: editingText,
-                      isEditing: false,
-                      dueDate: editingDate,
-                    }
+                  ? { ...task, text: editingText, isEditing: false, dueDate: editingDate }
                   : task
               ),
             }
           : list
       )
     );
-    setEditingText("");
-    setEditingDate(null);
+    setEditingText(""); // Clear editing state
+    setEditingDate(null); // Clear date state
   };
 
   const cancelEditing = (listId: number, taskId: number) => {
@@ -164,8 +137,8 @@ const TaskManager = () => {
           : list
       )
     );
-    setEditingText("");
-    setEditingDate(null);
+    setEditingText(""); // Clear editing state
+    setEditingDate(null); // Clear date state
   };
 
   const deleteTask = (listId: number, taskId: number) => {
@@ -182,8 +155,10 @@ const TaskManager = () => {
   };
 
   const deleteTaskList = (listId: number) => {
+    // Remove the task list with the specified ID
     setTaskLists(taskLists.filter((list) => list.id !== listId));
 
+    // If the deleted list was selected, clear the selection
     if (selectedListId === listId) {
       setSelectedListId(null);
     }
@@ -206,67 +181,6 @@ const TaskManager = () => {
     );
   };
 
-  const handleListNavigation = (
-    e: React.KeyboardEvent<HTMLLIElement>,
-    listId: number
-  ) => {
-    const currentIndex = taskLists.findIndex((list) => list.id === listId);
-
-    if (e.key === "ArrowUp") {
-      const prevIndex = currentIndex - 1;
-      if (prevIndex >= 0) {
-        setSelectedListId(taskLists[prevIndex].id);
-        document.querySelectorAll("li")[prevIndex]?.focus();
-      }
-    } else if (e.key === "ArrowDown") {
-      const nextIndex = currentIndex + 1;
-      if (nextIndex < taskLists.length) {
-        setSelectedListId(taskLists[nextIndex].id);
-        document.querySelectorAll("li")[nextIndex]?.focus();
-      }
-    } else if (e.key === "Enter" || e.key === "ArrowRight") {
-      selectTaskList(listId);
-
-      console.log("entre en el if");
-
-      setTimeout(() => {
-        const firstTaskItem = document.querySelectorAll(
-          "ul." + styles.taskList + " li.taskItem"
-        )[0];
-        if (firstTaskItem) {
-          (firstTaskItem as HTMLElement)?.focus();
-          console.log("entre en el enfoque");
-        }
-      }, 0);
-    }
-  };
-
-  const handleTaskNavigation = (
-    e: React.KeyboardEvent<HTMLLIElement>,
-    taskId: number
-  ) => {
-    const tasks = selectedTaskList?.tasks || [];
-    const currentIndex = tasks.findIndex((task) => task.id === taskId);
-
-    const taskItems = document.querySelectorAll(
-      "ul." + styles.taskItem + " li.taskItem"
-    );
-
-    if (e.key === "ArrowUp") {
-      const prevIndex = currentIndex - 1;
-      if (prevIndex >= 0) {
-        (taskItems[prevIndex] as HTMLElement)?.focus();
-        console.log("task", taskItems[prevIndex]);
-      }
-    } else if (e.key === "ArrowDown") {
-      const nextIndex = currentIndex + 1;
-      if (nextIndex < tasks.length) {
-        (taskItems[nextIndex] as HTMLElement)?.focus();
-        console.log("task", taskItems[nextIndex]);
-      }
-    }
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>
@@ -276,9 +190,7 @@ const TaskManager = () => {
             <li
               key={list.id}
               className={selectedListId === list.id ? styles.selectedList : ""}
-              tabIndex={0}
               onClick={() => selectTaskList(list.id)}
-              onKeyDown={(e) => handleListNavigation(e, list.id)}
             >
               <span onClick={() => selectTaskList(list.id)}>{list.name}</span>
               <button
@@ -295,11 +207,6 @@ const TaskManager = () => {
           placeholder="New List Name"
           value={newListName}
           onChange={(e) => setNewListName(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              addTaskList();
-            }
-          }}
           className={styles.input}
         />
         <button onClick={addTaskList} className={styles.button}>
@@ -315,17 +222,12 @@ const TaskManager = () => {
             placeholder="Enter a new task"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                addTask();
-              }
-            }}
             className={styles.input}
           />
           <DatePicker
             selected={newTaskDate}
-            onChange={(date) => setNewTaskDate(date)}
-            placeholderText="📅"
+            onChange={(date) => setNewTaskDate(date)} // Set the new task's date
+            placeholderText="Select due date"
             className={styles.datePicker}
           />
           <button onClick={addTask} className={styles.button}>
@@ -333,45 +235,23 @@ const TaskManager = () => {
           </button>
         </div>
 
-        <div className={styles.filters}>
-          <button onClick={() => setFilter("all")} className={styles.button}>
-            All
-          </button>
-          <button
-            onClick={() => setFilter("completed")}
-            className={styles.button}
-          >
-            Completed
-          </button>
-          <button
-            onClick={() => setFilter("pending")}
-            className={styles.button}
-          >
-            Pending
-          </button>
-        </div>
-
         <ul className={styles.taskList}>
-          {filteredTasks.map((task) => (
+          {selectedTaskList?.tasks.map((task) => (
             <li
               key={task.id}
-              className={`${styles.taskItem} ${
-                task.completed ? styles.completed : ""
-              }`}
-              tabIndex={0}
-              onKeyDown={(e) => handleTaskNavigation(e, task.id)}
+              className={`${styles.taskItem} ${task.completed ? styles.completed : ""}`}
             >
               {task.isEditing ? (
                 <>
                   <input
                     type="text"
-                    value={editingText}
-                    onChange={(e) => setEditingText(e.target.value)}
+                    value={editingText} // Bind to editingText state
+                    onChange={(e) => setEditingText(e.target.value)} // Update editingText
                     className={styles.input}
                   />
                   <DatePicker
                     selected={editingDate}
-                    onChange={(date) => setEditingDate(date)}
+                    onChange={(date) => setEditingDate(date)} // Update the task's date
                     className={styles.datePicker}
                   />
                   <button
@@ -393,37 +273,19 @@ const TaskManager = () => {
                     className={styles.taskText}
                     onClick={() => toggleCompletion(selectedListId!, task.id)}
                   >
-                    {task.text} (Due:{" "}
-                    {task.dueDate && task.dueDate instanceof Date
-                      ? task.dueDate.toLocaleDateString()
-                      : "No due date"}
-                    )
+                    {task.text} (Due: {task.dueDate ? task.dueDate.toLocaleDateString() : "No due date"})
                   </span>
                   <button
-                    onClick={() =>
-                      enableEditing(
-                        selectedListId!,
-                        task.id,
-                        task.text,
-                        task.dueDate
-                      )
-                    }
+                    onClick={() => enableEditing(selectedListId!, task.id, task.text, task.dueDate)}
                     className={styles.button}
                   >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => toggleCompletion(selectedListId!, task.id)}
-                    className={styles["button-complete"]}
-                  >
-                    {task.completed ? "Mark as Pending" : "Mark as Completed"}
+                    ✏️
                   </button>
                   <button
                     onClick={() => deleteTask(selectedListId!, task.id)}
-                    className={styles["button-delete"]}
+                    className={styles.button}
                   >
-                    Delete
+                    🗑️
                   </button>
                 </>
               )}

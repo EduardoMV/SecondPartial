@@ -87,6 +87,24 @@
     }
   }
 
+  .datePickerWrapper {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.calendarIcon {
+  font-size: 24px; 
+  cursor: pointer;
+}
+
+.hiddenInput {
+  opacity: 0; 
+  position: absolute;
+  pointer-events: none; 
+}
+
+
   .taskManager {
     flex: 1;
     padding: 20px;

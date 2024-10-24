@@ -1,12 +1,44 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-color: #8bbcdc; 
+  --hover-color: #7daac8;   
+  --border-color: #cccccc;  
+  --background-color: #f9f9f9; 
+  --color-text: #1d1d1d;
+  --button-text: #171717;
+  --sidebar-background-color: #f1f1f1;
+
+  /* Buttons */
+  --button-edit-bg: #9e9bfe;
+  --button-edit-hover-bg: #8f8bf4;
+  --button-complete-bg: #5cd669;
+  --button-complete-hover-bg: #4dc059;
+  --button-delete-bg: #ffb1b2;
+  --button-delete-hover-bg: #ec999a;
+
 }
 
+/* Detect dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #202124;
+    --foreground: #e8eaed;          
+    --primary-color: #65a9e1;       
+    --hover-color: #5a92c7;         
+    --border-color: #5f6368;        
+    --background-color: #303134;    
+    --color-text: #d1d3d4;   
+    --button-text: #171717;       
+    --sidebar-background-color: #28292c; 
+
+    /* Buttons */
+    --button-edit-bg: #7c7cff;
+    --button-edit-hover-bg: #6a6ade;
+    --button-complete-bg: #4caf50;
+    --button-complete-hover-bg: #43a047;
+    --button-delete-bg: #e57373;
+    --button-delete-hover-bg: #d32f2f;
   }
 }
 

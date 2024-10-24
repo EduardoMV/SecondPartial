@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './taskManager.module.scss';
 
 interface Task {
@@ -23,26 +23,39 @@ const TaskManager = () => {
   const [newListName, setNewListName] = useState<string>('');
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
 
-  // Función para agregar una nueva lista de tareas
+  // Load task lists from localStorage on component mount
+  useEffect(() => {
+    const savedTaskLists = localStorage.getItem('taskLists');
+    if (savedTaskLists) {
+      try {
+        setTaskLists(JSON.parse(savedTaskLists));
+      } catch (error) {
+        console.error("Failed to parse task lists from localStorage", error);
+      }
+    }
+  }, []); // Runs only once when the component mounts
+
+  // Save task lists to localStorage whenever they change
+  useEffect(() => {
+    if (taskLists.length > 0) {
+      localStorage.setItem('taskLists', JSON.stringify(taskLists));
+    }
+  }, [taskLists]);
+
   const addTaskList = () => {
     if (newListName.trim()) {
-      setTaskLists([
-        ...taskLists,
-        { id: Date.now(), name: newListName, tasks: [] },
-      ]);
+      const newList = { id: Date.now(), name: newListName, tasks: [] };
+      setTaskLists((prevTaskLists) => [...prevTaskLists, newList]);
       setNewListName('');
     }
   };
 
-  // Función para cambiar la lista seleccionada
   const selectTaskList = (id: number) => {
     setSelectedListId(id);
   };
 
-  // Obtener la lista seleccionada
   const selectedTaskList = taskLists.find(list => list.id === selectedListId);
-  
-  // Función para agregar una nueva tarea a la lista seleccionada
+
   const addTask = () => {
     if (newTask.trim() && selectedListId !== null) {
       setTaskLists(taskLists.map(list =>
@@ -60,14 +73,12 @@ const TaskManager = () => {
     }
   };
 
-  // Filtrar las tareas de la lista seleccionada según el estado
   const filteredTasks = selectedTaskList?.tasks.filter(task => {
     if (filter === 'completed') return task.completed;
     if (filter === 'pending') return !task.completed;
     return true;
   }) || [];
 
-  // Función para habilitar la edición de una tarea
   const enableEditing = (listId: number, taskId: number) => {
     setTaskLists(taskLists.map(list =>
       list.id === listId
@@ -81,7 +92,6 @@ const TaskManager = () => {
     ));
   };
 
-  // Función para guardar una tarea editada
   const saveTask = (listId: number, taskId: number, newText: string) => {
     setTaskLists(taskLists.map(list =>
       list.id === listId
@@ -95,7 +105,6 @@ const TaskManager = () => {
     ));
   };
 
-  // Función para cancelar la edición de una tarea
   const cancelEditing = (listId: number, taskId: number) => {
     setTaskLists(taskLists.map(list =>
       list.id === listId
@@ -109,7 +118,6 @@ const TaskManager = () => {
     ));
   };
 
-  // Función para eliminar una tarea
   const deleteTask = (listId: number, taskId: number) => {
     setTaskLists(taskLists.map(list =>
       list.id === listId
@@ -121,7 +129,6 @@ const TaskManager = () => {
     ));
   };
 
-  // Función para cambiar el estado de completado de una tarea
   const toggleCompletion = (listId: number, taskId: number) => {
     setTaskLists(taskLists.map(list =>
       list.id === listId

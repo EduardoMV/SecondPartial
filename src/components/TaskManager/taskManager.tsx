@@ -35,7 +35,7 @@ const TaskManager = () => {
     if (savedTaskLists) {
       try {
         const parsedTaskLists: TaskList[] = JSON.parse(savedTaskLists);
-  
+
         const taskListsWithDates = parsedTaskLists.map((list) => ({
           ...list,
           tasks: list.tasks.map((task) => ({
@@ -43,7 +43,7 @@ const TaskManager = () => {
             dueDate: task.dueDate ? new Date(task.dueDate) : null,
           })),
         }));
-  
+
         setTaskLists(taskListsWithDates);
       } catch (error) {
         console.error("Failed to parse task lists from localStorage", error);
@@ -52,7 +52,7 @@ const TaskManager = () => {
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (event: { key: string; }) => {
+    const handleKeyDown = (event: { key: string }) => {
       if (event.key === "1") {
         setTheme("light");
         document.body.classList.remove(styles.darkMode);
@@ -132,26 +132,26 @@ const TaskManager = () => {
   };
 
   const filteredTasks =
-  selectedTaskList?.tasks
-    .filter((task) => {
-      if (filter === "completed") return task.completed;
-      if (filter === "pending") return !task.completed;
-      return true;
-    })
-    .sort((a, b) => {
-      const dateA = a.dueDate ? new Date(a.dueDate) : null;
-      const dateB = b.dueDate ? new Date(b.dueDate) : null;
+    selectedTaskList?.tasks
+      .filter((task) => {
+        if (filter === "completed") return task.completed;
+        if (filter === "pending") return !task.completed;
+        return true;
+      })
+      .sort((a, b) => {
+        const dateA = a.dueDate ? new Date(a.dueDate) : null;
+        const dateB = b.dueDate ? new Date(b.dueDate) : null;
 
-      if (dateA && dateB) {
-        return dateB.getTime() - dateA.getTime();
-      } else if (dateA) {
-        return -1;
-      } else if (dateB) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }) || [];
+        if (dateA && dateB) {
+          return dateB.getTime() - dateA.getTime();
+        } else if (dateA) {
+          return -1;
+        } else if (dateB) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }) || [];
 
   const enableEditing = (
     listId: number,
@@ -441,12 +441,14 @@ const TaskManager = () => {
                     className={styles.taskText}
                     onClick={() => toggleCompletion(selectedListId!, task.id)}
                   >
-                    {task.text} (Due:{" "}
-                    {task.dueDate && task.dueDate instanceof Date
-                      ? task.dueDate.toLocaleDateString()
-                      : "No due date"}
-                    )
+                    {task.text}
                   </span>
+                  <div className={styles.dueDate}>
+                    {task.dueDate && task.dueDate instanceof Date
+                      ? `Due: ${task.dueDate.toLocaleDateString()}`
+                      : "No due date"}
+                  </div>
+
                   <button
                     onClick={() =>
                       enableEditing(

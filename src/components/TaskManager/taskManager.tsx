@@ -72,6 +72,20 @@ const TaskManager = () => {
   }, []);
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ([37, 38, 39, 40].includes(event.keyCode)) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
     if (taskLists.length > 0) {
       localStorage.setItem("taskLists", JSON.stringify(taskLists));
     }

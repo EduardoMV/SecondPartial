@@ -1,21 +1,14 @@
-$primary-color: #f0b1ff;
-$hover-color: #be95be;
-$border-color: #a3a3a3;
-$background-color: #ffffff;
-$color-text: #181818;
-$sidebar-background-color: #f4f4f4;
-
 .container {
-  display: flex;  // Cambiar a flex row
-  flex-direction: row;  // Asegúrate de que sea horizontal
-  align-items: flex-start; // Alinear al inicio
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   padding: 20px;
-  background-color: $background-color;
+  background-color: var(--background-color);
   min-height: 100vh;
 
   h1 {
     text-align: center;
-    color: $color-text;
+    color: var(--color-text);
     margin-bottom: 30px;
     font-size: 2.5rem;
   }
@@ -24,12 +17,12 @@ $sidebar-background-color: #f4f4f4;
     width: 250px;
     height: 100dvh;
     padding: 20px;
-    background-color: $sidebar-background-color;
+    background-color: var(--sidebar-background-color);
 
     h2 {
       font-size: 1.5rem;
       margin-bottom: 20px;
-      color: $color-text;
+      color: var(--color-text);
     }
 
     ul {
@@ -39,18 +32,19 @@ $sidebar-background-color: #f4f4f4;
       li {
         padding: 10px;
         margin-bottom: 10px;
-        background-color: #fff;
+        background-color: #ffffff;
+        color: var(--button-text);
         border-radius: 6px;
         cursor: pointer;
-        border: 1px solid $border-color;
+        border: 1px solid var(--border-color);
 
         &:hover {
-          background-color: $hover-color;
+          background-color: var(--hover-color);
         }
 
         &.selectedList {
-          background-color: $primary-color;
-          color: white;
+          background-color: var(--primary-color);
+          color: var(--foreground);
         }
       }
     }
@@ -60,7 +54,7 @@ $sidebar-background-color: #f4f4f4;
       padding: 10px;
       margin-top: 20px;
       border-radius: 6px;
-      border: 1px solid $border-color;
+      border: 1px solid var(--border-color);
       background-color: #e1e1e1;
       color: black;
     }
@@ -69,118 +63,135 @@ $sidebar-background-color: #f4f4f4;
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      background-color: $primary-color;
+      background-color: var(--primary-color);
       color: white;
       border-radius: 6px;
       cursor: pointer;
 
       &:hover {
-        background-color: $hover-color;
+        background-color: var(--hover-color);
       }
     }
   }
 
   .taskManager {
-    flex: 1;  // Esto asegura que ocupe el resto del espacio disponible
+    flex: 1;
     padding: 20px;
-    display: flex; // Hacer que el contenedor use flexbox
-    flex-direction: column; // Alinear en columna
-    align-items: center; // Centrar horizontalmente
-    justify-content: flex-start; // Alinear al inicio verticalmente
-  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
     .taskInput {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 20px;
-  
+
       input[type="text"] {
         padding: 10px;
         margin-right: 10px;
-        border: 1px solid $border-color;
+        border: 1px solid var(--border-color);
         border-radius: 6px;
         background-color: #e1e1e1;
         color: black;
         font-size: 1rem;
         width: 300px;
       }
-  
+
       button {
         padding: 10px 15px;
         margin: 5px;
         border: none;
-        background-color: $primary-color;
+        background-color: var(--primary-color);
         color: white;
         cursor: pointer;
         border-radius: 6px;
         font-size: 1rem;
-  
+
         &:hover {
-          background-color: $hover-color;
+          background-color: var(--hover-color);
         }
       }
     }
-  
-    // Ajustar la lista de tareas para que esté centrada
+
     ul {
       list-style: none;
       padding: 0;
       width: 100%;
-      max-width: 600px; // O puedes cambiar esto si quieres una lista más ancha
-      margin: 0; // Asegúrate de que no haya margen adicional
+      max-width: 600px;
+      margin: 0;
       display: flex;
       flex-direction: column;
-      align-items: center; // Centrar cada tarea dentro de la lista
-  
+      align-items: center;
+
       li {
-        margin: 15px 0; // Espaciado entre las tareas
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 15px 0;
         padding: 15px;
         background-color: #ffffff;
-        border: 1px solid $border-color;
+        border: 1px solid var(--border-color);
         border-radius: 6px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         color: #181818;
-        width: 100%; // Asegurarte de que las tareas ocupen todo el ancho disponible
-  
+        width: 100%;
+
         span {
           flex: 1;
           margin-right: 15px;
           font-size: 1.1rem;
         }
-      }
-    }
-  }
-  
 
-  .taskInput {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+        button {
+          padding: 10px 15px;
+          margin-left: 10px;
+          background-color: var(--primary-color);
+          color: white;
+          cursor: pointer;
+          border-radius: 6px;
+          font-size: 1rem;
 
-    input[type="text"] {
-      padding: 10px;
-      margin-right: 10px;
-      border: 1px solid $border-color;
-      border-radius: 6px;
-      background-color: #e1e1e1;
-      color: black;
-      font-size: 1rem;
-      width: 300px;
-    }
+          &:hover {
+            background-color: var(--hover-color);
+          }
+        }
 
-    button {
-      padding: 10px 15px;
-      margin: 5px;
-      border: none;
-      background-color: $primary-color;
-      color: white;
-      cursor: pointer;
-      border-radius: 6px;
-      font-size: 1rem;
+        .button-edit {
+          background-color: var(--button-edit-bg);
+          border: 1px solid var(--button-edit-bg);
 
-      &:hover {
-        background-color: $hover-color;
+          &:hover {
+            background-color: var(--button-edit-hover-bg);
+          }
+        }
+
+        .button-complete {
+          background-color: var(--button-complete-bg);
+          border: 1px solid var(--button-complete-bg);
+
+          &:hover {
+            background-color: var(--button-complete-hover-bg);
+          }
+        }
+
+        .button-delete {
+          background-color: var(--button-delete-bg);
+          border: 1px solid var(--button-delete-bg);
+
+          &:hover {
+            background-color: var(--button-delete-hover-bg);
+          }
+        }
+
+        &.completed {
+          opacity: 0.6;
+          .taskCross{
+            text-decoration: line-through;
+          }
+        }
       }
     }
   }
@@ -194,7 +205,7 @@ $sidebar-background-color: #f4f4f4;
       padding: 10px 20px;
       margin: 5px;
       border: 1px solid #a3a3a3;
-      background-color:white;
+      background-color: white;
       color: #181818;
       cursor: pointer;
       border-radius: 6px;
@@ -206,117 +217,77 @@ $sidebar-background-color: #f4f4f4;
         border: 1px solid #181818;
       }
 
-      &:focus{
+      &:focus {
         background-color: #181818;
         color: white;
         border: 1px solid #181818;
       }
     }
   }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    width: 100%;
-    max-width: 600px;
-  }
-
-  li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 15px 0;
-    padding: 15px;
-    background-color: #ffffff;
-    border: 1px solid $border-color;
-    border-radius: 6px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    color: #181818;
-
-    span {
-      flex: 1;
-      margin-right: 15px;
-      font-size: 1.1rem;
-    }
-
-    input[type="text"] {
-      border: none;
-      background: transparent;
-      flex: 1;
-      margin-right: 15px;
-      color: #181818;
-      font-size: 1.1rem;
-    }
-
-    button {
-      padding: 10px 15px;
-      margin-left: 10px;
-      background-color: $primary-color;
-      color: white;
-      cursor: pointer;
-      border-radius: 6px;
-      font-size: 1rem;
-
-      &:hover {
-        background-color: $hover-color;
-      }
-    }
-
-    .button-edit {
-      padding: 10px 15px;
-      margin-left: 10px;
-      background-color: #9e9bfe;
-      color: white;
-      cursor: pointer;
-      border: 1px solid #9e9bfe;
-      border-radius: 6px;
-      font-size: 1rem;
-
-      &:hover {
-        background-color: #8f8bf4;
-      }
-    }
-
-    .button-complete {
-      padding: 10px 15px;
-      margin-left: 10px;
-      background-color: #5cd669;
-      color: white;
-      cursor: pointer;
-      border: 1px solid #5cd669;
-      border-radius: 6px;
-      font-size: 1rem;
-
-      &:hover {
-        background-color: #4dc059;
-      }
-    }
-
-    .button-delete {
-      padding: 10px 15px;
-      margin-left: 10px;
-      background-color: #ffb1b2;
-      color: white;
-      cursor: pointer;
-      border: 1px solid #ffb1b2;
-      border-radius: 6px;
-      font-size: 1rem;
-
-      &:hover {
-        background-color:#ec999a;
-      }
-    }
-
-    &.completed {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-  }
-
 }
 
-@media (prefers-color-scheme: dark){
-  $background-color: #181818;
-  $color-text: #ffffff;
-  $sidebar-background-color: #242424;
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 10px;
+
+    .sidebar {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+    }
+
+    .taskManager {
+      padding: 10px;
+    }
+
+    .taskInput input[type="text"] {
+      width: 100%;
+    }
+
+    ul li {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 5px;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .taskInput input[type="text"] {
+      width: 90%;
+    }
+
+    ul li {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+    }
+
+    .sidebar {
+      h2 {
+        font-size: 1.2rem;
+      }
+    }
+
+    .taskManager {
+      padding: 5px;
+    }
+
+    ul li button {
+      width: 100%;
+      margin: 5px 0;
+    }
+  }
 }

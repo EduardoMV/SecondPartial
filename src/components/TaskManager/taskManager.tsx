@@ -178,6 +178,61 @@ const TaskManager = () => {
     );
   };
 
+  const handleListNavigation = (e: React.KeyboardEvent<HTMLLIElement>, listId: number) => {
+    const currentIndex = taskLists.findIndex((list) => list.id === listId);
+  
+    if (e.key === "ArrowUp") {
+      const prevIndex = currentIndex - 1;
+      if (prevIndex >= 0) {
+        setSelectedListId(taskLists[prevIndex].id);
+        document.querySelectorAll("li")[prevIndex]?.focus();
+      }
+    } else if (e.key === "ArrowDown") {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < taskLists.length) {
+        setSelectedListId(taskLists[nextIndex].id);
+        // Enfocar la siguiente lista
+        document.querySelectorAll("li")[nextIndex]?.focus();
+      }
+    } else if(e.key === "Enter" || e.key === "ArrowRight") {
+      selectTaskList(listId);
+
+      console.log("entre en el if")
+
+      setTimeout(() => {
+        const firstTaskItem = document.querySelectorAll("ul." + styles.taskList + " li.taskItem")[0];
+        if (firstTaskItem) {
+          (firstTaskItem as HTMLElement)?.focus();
+          console.log("entre en el enfoque");
+        }
+      }, 0); 
+    }
+  };
+  
+  const handleTaskNavigation = (e: React.KeyboardEvent<HTMLLIElement>, taskId: number) => {
+    const tasks = selectedTaskList?.tasks || [];
+    const currentIndex = tasks.findIndex((task) => task.id === taskId);
+  
+    // Seleccionar todos los elementos `li` que representan las tareas de la lista actual
+    const taskItems = document.querySelectorAll("ul." + styles.taskItem + " li.taskItem");
+  
+    if (e.key === "ArrowUp") {
+      const prevIndex = currentIndex - 1;
+      if (prevIndex >= 0) {
+        // Enfocar la tarea anterior
+        (taskItems[prevIndex] as HTMLElement)?.focus();
+        console.log("task", taskItems[prevIndex]);
+      }
+    } else if (e.key === "ArrowDown") {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < tasks.length) {
+        // Enfocar la siguiente tarea
+        (taskItems[nextIndex] as HTMLElement)?.focus();
+        console.log("task", taskItems[nextIndex]);
+      }
+    }
+  };  
+
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>
@@ -185,8 +240,11 @@ const TaskManager = () => {
         <ul>
           {taskLists.map((list) => (
             <li
-              key={list.id}
-              className={selectedListId === list.id ? styles.selectedList : ""}
+            key={list.id}
+            className={selectedListId === list.id ? styles.selectedList : ""}
+            tabIndex={0}  // Hacer la lista enfocable
+            onClick={() => selectTaskList(list.id)}
+            onKeyDown={(e) => handleListNavigation(e, list.id)}
             >
               <span onClick={() => selectTaskList(list.id)}>{list.name}</span>
               <button
@@ -257,9 +315,9 @@ const TaskManager = () => {
           {filteredTasks.map((task) => (
             <li
               key={task.id}
-              className={`${styles.taskItem} ${
-                task.completed ? styles.completed : ""
-              }`}
+              className={`${styles.taskItem} ${task.completed ? styles.completed : ""}`}
+              tabIndex={0}  // Hacer la tarea enfocable
+              onKeyDown={(e) => handleTaskNavigation(e, task.id)}  // Manejar la navegación
             >
               {task.isEditing ? (
                 <>

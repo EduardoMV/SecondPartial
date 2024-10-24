@@ -23,21 +23,52 @@ const TaskManager = () => {
   const [taskLists, setTaskLists] = useState<TaskList[]>([]);
   const [selectedListId, setSelectedListId] = useState<number | null>(null);
   const [newTask, setNewTask] = useState<string>("");
-  const [newTaskDate, setNewTaskDate] = useState<Date | null>(null); // State for new task date
+  const [newTaskDate, setNewTaskDate] = useState<Date | null>(null);
   const [newListName, setNewListName] = useState<string>("");
   const [filter, setFilter] = useState<"all" | "completed" | "pending">("all");
   const [editingText, setEditingText] = useState<string>("");
-  const [editingDate, setEditingDate] = useState<Date | null>(null); // State for editing date
+  const [editingDate, setEditingDate] = useState<Date | null>(null);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     const savedTaskLists = localStorage.getItem("taskLists");
     if (savedTaskLists) {
       try {
-        setTaskLists(JSON.parse(savedTaskLists));
+        const parsedTaskLists: TaskList[] = JSON.parse(savedTaskLists);
+  
+        const taskListsWithDates = parsedTaskLists.map((list) => ({
+          ...list,
+          tasks: list.tasks.map((task) => ({
+            ...task,
+            dueDate: task.dueDate ? new Date(task.dueDate) : null,
+          })),
+        }));
+  
+        setTaskLists(taskListsWithDates);
       } catch (error) {
         console.error("Failed to parse task lists from localStorage", error);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: { key: string; }) => {
+      if (event.key === "1") {
+        setTheme("light");
+        document.body.classList.remove(styles.darkMode);
+        document.body.classList.add(styles.lightMode);
+      } else if (event.key === "2") {
+        setTheme("dark");
+        document.body.classList.remove(styles.lightMode);
+        document.body.classList.add(styles.darkMode);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   useEffect(() => {
@@ -87,23 +118,26 @@ const TaskManager = () => {
   };
 
   const filteredTasks =
-    selectedTaskList?.tasks
-      .filter((task) => {
-        if (filter === "completed") return task.completed;
-        if (filter === "pending") return !task.completed;
-        return true;
-      })
-      .sort((a, b) => {
-        if (a.dueDate && b.dueDate) {
-          return b.dueDate.getTime() - a.dueDate.getTime();
-        } else if (a.dueDate) {
-          return -1;
-        } else if (b.dueDate) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }) || [];
+  selectedTaskList?.tasks
+    .filter((task) => {
+      if (filter === "completed") return task.completed;
+      if (filter === "pending") return !task.completed;
+      return true;
+    })
+    .sort((a, b) => {
+      const dateA = a.dueDate ? new Date(a.dueDate) : null;
+      const dateB = b.dueDate ? new Date(b.dueDate) : null;
+
+      if (dateA && dateB) {
+        return dateB.getTime() - dateA.getTime();
+      } else if (dateA) {
+        return -1;
+      } else if (dateB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }) || [];
 
   const enableEditing = (
     listId: number,

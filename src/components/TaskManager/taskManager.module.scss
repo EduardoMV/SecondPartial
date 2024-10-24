@@ -270,25 +270,39 @@
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 375px) {
   .container {
-    padding: 5px;
+    padding: 1px;
+    width: 375px;
 
     h1 {
       font-size: 1.8rem;
     }
 
+    
+    .taskInput {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      width: 350px;
+    }
+
     .taskInput input[type="text"] {
-      width: 90%;
+      width: 360px;
+      margin: 20px;
     }
 
     ul li {
       flex-direction: column;
       align-items: flex-start;
-      padding: 10px;
+      padding: 0px;
+      width: 350px;
     }
 
     .sidebar {
+      padding: 5px;
+      margin-bottom: 20px;
       h2 {
         font-size: 1.2rem;
       }
@@ -296,10 +310,12 @@
 
     .taskManager {
       padding: 5px;
+      width: 370px;
     }
 
     ul li button {
-      width: 100%;
+      padding: 0px;
+      width: 30%;
       margin: 5px 0;
     }
   }
